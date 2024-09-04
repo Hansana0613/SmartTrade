@@ -5,11 +5,19 @@ import java.io.Serializable;
 
 public class User_DTO implements Serializable {
 
-    private String first_name;
-    private String last_name;
-    private String email;
+    @Expose
+    String id;
     
-    @Expose(deserialize = false, serialize = true)
+    @Expose
+    private String first_name;
+
+    @Expose
+    private String last_name;
+
+    @Expose
+    private String email;
+
+    @Expose(deserialize = true, serialize = false)
     private String password;
 
     public User_DTO() {
