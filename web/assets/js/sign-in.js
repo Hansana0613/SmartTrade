@@ -1,14 +1,12 @@
-async function signUp() {
+async function signIn() {
 
     const user_dto = {
-        first_name: document.getElementById("first_name").value,
-        last_name: document.getElementById("last_name").value,
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value,
+        first_name: document.getElementById("email").value,
+        last_name: document.getElementById("password").value,
     };
 
     const response = await fetch(
-            "SignUp",
+            "SignIp",
             {
                 method: "POST",
                 body: JSON.stringify(user_dto),
@@ -18,15 +16,14 @@ async function signUp() {
             }
 
     );
-
     if (response.ok) {
 
         const json = await response.json();
 
         if (json.success) {
-            window.location = "verify-account.html";
+//            window.location = "verify-account.html";
         } else {
-            document.getElementById("message").innerHTML = json.content;
+//            document.getElementById("message").innerHTML = json.content;
         }
 
     } else {
