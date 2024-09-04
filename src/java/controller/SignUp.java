@@ -79,7 +79,7 @@ public class SignUp extends HttpServlet {
                 session.beginTransaction().commit();
 
                 response_DTO.setSuccess(true);
-                response_DTO.setContent("Registration Complete");
+                response_DTO.setContent("Registration Complete. Please check your inbox for Verification Code!");
             }
             session.close();
         }
