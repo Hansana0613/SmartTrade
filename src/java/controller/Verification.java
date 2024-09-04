@@ -3,6 +3,7 @@ package controller;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import dto.Response_DTO;
+import dto.User_DTO;
 import entity.User;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -40,11 +41,17 @@ public class Verification extends HttpServlet {
 
                 User user = (User) criteria1.list().get(0);
                 user.setVerification("Verified");
-                
+
                 session.update(user);
                 session.beginTransaction().commit();
-                
+
+                User_DTO user_DTO = new User_DTO();
+                user_DTO.setFirst_name(user.getFirst_name());
+                user_DTO.setLast_name(user.getLast_name());
+                user_DTO.setEmail(email);
                 request.getSession().removeAttribute("email");
+                request.getSession().setAttribute("user", user_DTO);
+
                 response_DTO.setSuccess(true);
                 response_DTO.setContent("Verification Success");
 
@@ -56,7 +63,7 @@ public class Verification extends HttpServlet {
         } else {
             response_DTO.setContent("Verification Unavailable. Please Sign In");
         }
-        
+
         response.setContentType("apllication/json");
         response.getWriter().write(gson.toJson(response_DTO));
         System.out.println(gson.toJson(response_DTO));
