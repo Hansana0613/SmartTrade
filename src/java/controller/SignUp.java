@@ -13,14 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.HibernateUtil;
+import model.Mail;
 import model.Validations;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
-/**
- *
- * @author KS COMPUTERS
- */
 @WebServlet(name = "SignUp", urlPatterns = {"/SignUp"})
 public class SignUp extends HttpServlet {
 
@@ -50,25 +47,34 @@ public class SignUp extends HttpServlet {
 
             Session session = HibernateUtil.getSessionFactory().openSession();
 
-            Criteria criteria = session.createCriteria(User.class);
-            criteria.add(Restrictions.eq("email", user_DTO.getEmail()));
+            Criteria criteria1 = session.createCriteria(User.class);
+            criteria1.add(Restrictions.eq("email", user_DTO.getEmail()));
 
-            if (!criteria.list().isEmpty()) {
+            if (!criteria1.list().isEmpty()) {
                 response_DTO.setContent("User with this Email already exists");
             } else {
 
                 //generate verification code
-                
-                User user = new User();
+                int code = (int) (Math.random() * 1000000);
 
-                session.save(user);
+                User user = new User();
+                user.setEmail(user_DTO.getEmail());
+                user.setFirst_name(user_DTO.getFirst_name());
+                user.setLast_name(user_DTO.getLast_name());
+                user.setPassword(user_DTO.getPassword());
+                user.setVerification(String.valueOf(code));
 
                 //send verification email
+                Mail.sendMail(user.getEmail(), "Smart Trade Verification",
+                        "<h1 style=\"color:#6482AD;\">Your Verification Code: "
+                        + user.getVerification() + "</h1>");
+                
+                session.save(user);
+                session.beginTransaction().commit();
+                response_DTO.setSuccess(true);
+                response_DTO.setContent("Registration Complete");
             }
             session.close();
-
         }
-
     }
-
 }
