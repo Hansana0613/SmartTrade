@@ -29,8 +29,10 @@ public class SignIn extends HttpServlet {
 
         if (user_DTO.getEmail().isEmpty()) {
             response_DTO.setContent("Please Enter Your Email");
+            
         } else if (user_DTO.getPassword().isEmpty()) {
             response_DTO.setContent("Please Enter Your Password");
+            
         } else {
 
             Session session = HibernateUtil.getSessionFactory().openSession();
@@ -39,7 +41,26 @@ public class SignIn extends HttpServlet {
             criteria1.add(Restrictions.eq("email", user_DTO.getEmail()));
             criteria1.add(Restrictions.eq("password", user_DTO.getPassword()));
 
-            if (criteria1.list().isEmpty()) {
+            if (!criteria1.list().isEmpty()) {
+                
+                User user = (User) criteria1.list().get(0);
+                
+                if (!user.getVerification().equals("Verified")) {
+                    //not verified
+                    
+                    request.getSession().setAttribute("email", user_DTO.getEmail());
+                    response_DTO.setContent("Not Verified");
+                    
+                } else {
+                    //verified
+                    user_DTO.setFirst_name(user.getFirst_name());
+                    user_DTO.setLast_name(user.getLast_name());
+                    user_DTO.setPassword(null);
+                    request.getSession().setAttribute("user", user_DTO);
+                    
+                    response_DTO.setSuccess(true);
+                    response_DTO.setContent("Sign In Success");
+                }
 
             } else {
                 response_DTO.setContent("Invalid details. Please try again");
