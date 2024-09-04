@@ -4,7 +4,6 @@ async function signIn() {
         first_name: document.getElementById("email").value,
         last_name: document.getElementById("password").value,
     };
-
     const response = await fetch(
             "SignIp",
             {
@@ -19,15 +18,20 @@ async function signIn() {
     if (response.ok) {
 
         const json = await response.json();
-
         if (json.success) {
-//            window.location = "verify-account.html";
+            window.location = "index.html";
+
         } else {
-//            document.getElementById("message").innerHTML = json.content;
+
+            if (json.content === "Unverified") {
+                window.location = "verify-account.html"
+            } else {
+                document.getElementById("message").innerHTML = json.content;
+            }
         }
 
     } else {
         document.getElementById("message").innerHTML = "Please try again later!";
-        }    
+    }    
 }
 
