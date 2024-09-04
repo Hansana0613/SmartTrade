@@ -1,10 +1,14 @@
 package dto;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 
 public class Response_DTO implements Serializable{
     
+    @Expose
     private boolean success;
+    
+    @Expose
     private Object content;
 
     public Response_DTO() {

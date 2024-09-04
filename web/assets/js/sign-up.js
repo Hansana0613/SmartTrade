@@ -7,8 +7,6 @@ async function signUp() {
         password:document.getElementById("password").value,
     };
     
-    console.log(user_dto);
-    
    const response = await fetch(
            "SignUp",
    {
@@ -22,6 +20,8 @@ async function signUp() {
    );
    
     if (response.ok){
+        
+        const 
         
     }else{
         
