@@ -1,8 +1,10 @@
 package dto;
 
-public class User_DTO {
-    
-    private String first_name;    
+import java.io.Serializable;
+
+public class User_DTO implements Serializable {
+
+    private String first_name;
     private String last_name;
     private String email;
 
@@ -32,5 +34,4 @@ public class User_DTO {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }

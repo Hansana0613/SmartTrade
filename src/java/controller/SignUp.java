@@ -1,5 +1,7 @@
 package controller;
 
+import com.google.gson.Gson;
+import entity.User;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +18,11 @@ public class SignUp extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("done");
+        
+        Gson gson = new Gson();
+        
+        gson.fromJson(request.getReader(), User.class);
+        
     }
 
 }
